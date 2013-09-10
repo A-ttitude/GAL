@@ -10,6 +10,14 @@ public class TestUnitaire extends TestCase {
 	public void testYinch() {
 
 		Yinsh _yinsh = new Yinsh();
+
 		assertTrue(_yinsh.current_color() == Yinsh.color.BLACK || _yinsh.current_color() == Yinsh.color.WHITE);
+	}
+
+	public void testPut_Ring() {
+
+		Yinsh _yinsh = new Yinsh();
+	
+		assertTrue(_yinsh.put_ring('A', 1, Yinsh.color.BLACK));
 	}
 }
