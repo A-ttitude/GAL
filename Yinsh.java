@@ -4,11 +4,12 @@ public class Yinsh {
 
 	public enum color {
 
-		BLACK, WHITE
+		BLACK, WHITE, RIEN
 	}
 
 	public color[][]	_plateau;
 	public int			_nbAnneau;
+	public color		_derniereCouleur;
 
 	// Constructeur
 
@@ -16,6 +17,8 @@ public class Yinsh {
 
 		_plateau = new color[11][11];
 		_nbAnneau = 0;
+		
+		_derniereCouleur = color.RIEN;
 	}
 
 	// Méthodes
@@ -32,10 +35,15 @@ public class Yinsh {
 		if(verifierCoordonnees(colonne, ligne - 1)) {
 
 			if(_plateau[ligne - 1][colonne] == null) {
+				
+				if(couleur != _derniereCouleur) {
 
-				_plateau[ligne - 1][colonne] = couleur;
-
-				_nbAnneau++;
+					_plateau[ligne - 1][colonne] = couleur;
+					_derniereCouleur = couleur;
+					_nbAnneau++;
+				}
+				
+				else throw new Exception("/!\\ On ne peut pas placer deux anneaux de même couleur consécutivement.");
 			}
 		}
 	}

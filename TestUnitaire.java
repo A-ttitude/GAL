@@ -59,6 +59,25 @@ public class TestUnitaire extends TestCase {
 		}
 		catch(Exception e) {
 			
+			System.out.println(e.getMessage() + "\n");
+			assertTrue(true);
+		}
+	}
+	
+	public void testPut_Ring4() {
+		
+		Yinsh _yinsh = new Yinsh();
+		
+		try {
+			
+			_yinsh.put_ring('A', 2, Yinsh.color.WHITE);
+			_yinsh.put_ring('A', 3, Yinsh.color.WHITE);
+			
+			assertTrue(false);
+		}
+		catch(Exception e) {
+			
+			System.out.println(e.getMessage() + "\n");
 			assertTrue(true);
 		}
 	}
