@@ -81,4 +81,22 @@ public class TestUnitaire extends TestCase {
 			assertTrue(true);
 		}
 	}
+	
+	public void testIntersectionAnneau() {
+		
+		Yinsh _yinsh = new Yinsh();
+		
+		try {
+			
+			_yinsh.put_ring('A', 2, Yinsh.color.WHITE);
+			_yinsh.put_ring('A', 2, Yinsh.color.WHITE);
+			
+			assertTrue(false);
+		}
+		catch(Exception e) {
+			
+			System.out.println(e.getMessage() + "\n");
+			assertTrue(true);
+		}
+	}
 }

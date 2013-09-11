@@ -45,6 +45,8 @@ public class Yinsh {
 				
 				else throw new Exception("/!\\ On ne peut pas placer deux anneaux de même couleur consécutivement.");
 			}
+			
+			else throw new Exception("/!\\ On ne peut pas placer deux anneaux sur la même intersection.");
 		}
 	}
 
