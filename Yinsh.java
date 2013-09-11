@@ -8,8 +8,11 @@ public class Yinsh {
 	}
 
 	public color[][]	_plateau;
+	
 	public int			_nbAnneau;
-	public color		_derniereCouleur;
+	public int			_nbAnneauBlanc;
+	public int			_nbAnneauNoir;
+	public int			_derniereCouleur;
 
 	// Constructeur
 
@@ -17,8 +20,10 @@ public class Yinsh {
 
 		_plateau = new color[11][11];
 		_nbAnneau = 0;
+		_nbAnneauBlanc = 0;
+		_nbAnneauNoir = 0;
 		
-		_derniereCouleur = color.RIEN;
+		_derniereCouleur = 0;
 	}
 
 	// Méthodes
@@ -31,16 +36,23 @@ public class Yinsh {
 	public void put_ring(char lettreColonne, int ligne, Yinsh.color couleur) throws Exception {
 
 		int colonne = Character.getNumericValue(lettreColonne) - 10;
+		int indiceCouleur = (couleur == color.WHITE) ? 1 : 2;
 
 		if(verifierCoordonnees(colonne, ligne - 1)) {
 
 			if(_plateau[ligne - 1][colonne] == null) {
 				
-				if(couleur != _derniereCouleur) {
+				if(indiceCouleur != _derniereCouleur) {
 
 					_plateau[ligne - 1][colonne] = couleur;
-					_derniereCouleur = couleur;
+					_derniereCouleur = indiceCouleur;
 					_nbAnneau++;
+					
+					if(indiceCouleur == 1)
+						_nbAnneauBlanc++;
+					
+					else if(indiceCouleur == 2)
+						_nbAnneauNoir++;
 				}
 				
 				else throw new Exception("/!\\ On ne peut pas placer deux anneaux de même couleur consécutivement.");
@@ -99,5 +111,15 @@ public class Yinsh {
 			throw new Exception("/!\\ Coordonnees non valide.");
 
 		return true;
+	}
+	
+	public int getNbAnneauBlanc() {
+		
+		return _nbAnneauBlanc;
+	}
+	
+	public int getNbAnneauNoir() {
+		
+		return _nbAnneauNoir;
 	}
 }
