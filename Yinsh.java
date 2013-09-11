@@ -1,17 +1,25 @@
 public class Yinsh {
 
+	// Variables //
+	
 	public enum color {
 
 		BLACK, WHITE
 	}
 
 	public color[][]	_plateau;
+	public int 			_nbAnneau;
 
+	// Constructeur
+	
 	public Yinsh() {
 
 		_plateau = new color[11][11];
+		_nbAnneau = 0;
 	}
 
+	// Méthodes
+	
 	public color current_color() {
 
 		return Math.random() > 0.5 ? color.BLACK : color.WHITE;
@@ -46,9 +54,15 @@ public class Yinsh {
 				_plateau[ligne - 1][colonne] = couleur;
 
 				booleen = true;
+				_nbAnneau++;
 			}
 		}
 
 		return booleen;
+	}
+	
+	public int getNbAnneau() {
+		
+		return _nbAnneau;
 	}
 }
