@@ -5,6 +5,8 @@ public class AllTests {
 
 	public static Test suite() {
 
+		System.out.println("Test Unitaires");
+		
 		TestSuite _suite = new TestSuite("Tests Unitaires");
 		_suite.addTest(new TestSuite(TestUnitaire.class));
 

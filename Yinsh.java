@@ -66,7 +66,7 @@ public class Yinsh {
 		int colonne = Character.getNumericValue(lettreColonne) - 10;
 		int indiceCouleur = (couleur == color.WHITE) ? 1 : 2;
 
-		if(verifierCoordonnees(colonne, ligne - 1)) {
+		if(verifierCoordonnees(colonne, ligne, couleur)) {
 
 			if(indiceCouleur != _derniereCouleur) {
 
@@ -85,47 +85,57 @@ public class Yinsh {
 		}
 	}
 
-	private boolean verifierCoordonnees(int colonne, int ligne) throws Exception {
+	private boolean verifierCoordonnees(int colonne, int ligne, color couleur) throws Exception {
+		
+		int l = ligne - 1;
 
-		if(colonne < 0 || colonne > 11 || ligne < 0 || ligne > 11)
+		if(colonne < 0 || colonne > 11 || l < 0 || l > 11)
 			throw new Exception("/!\\ Coordonnees non valide.");
 
-		if(colonne == 0 && (ligne == 0 || ligne >= 5)) // Si A | 1, 6, 7, 8, 9, 10, 11
+		if(colonne == 0 && (l == 0 || l >= 5)) // Si A | 1, 6, 7, 8, 9, 10, 11
 			throw new Exception("/!\\ Coordonnees non valide.");
 
-		if(colonne == 1 && ligne >= 7) // Si B | 8, 9, 10, 11
+		if(colonne == 1 && l >= 7) // Si B | 8, 9, 10, 11
 			throw new Exception("/!\\ Coordonnees non valide.");
 
-		if(colonne == 2 && ligne >= 8) // Si C | 9, 10, 11
+		if(colonne == 2 && l >= 8) // Si C | 9, 10, 11
 			throw new Exception("/!\\ Coordonnees non valide.");
 
-		if(colonne == 3 && ligne >= 9) // Si D | 10, 11
+		if(colonne == 3 && l >= 9) // Si D | 10, 11
 			throw new Exception("/!\\ Coordonnees non valide.");
 
-		if(colonne == 4 && ligne == 10) // Si E | 10
+		if(colonne == 4 && l == 10) // Si E | 10
 			throw new Exception("/!\\ Coordonnees non valide.");
 
-		if(colonne == 5 && (ligne == 0 || ligne == 10)) // Si F | 10
+		if(colonne == 5 && (l == 0 || l == 10)) // Si F | 10
 			throw new Exception("/!\\ Coordonnees non valide.");
 
-		if(colonne == 6 && ligne == 0) // Si G | 1
+		if(colonne == 6 && l == 0) // Si G | 1
 			throw new Exception("/!\\ Coordonnees non valide.");
 
-		if(colonne == 7 && ligne < 2) // Si H | 1, 2
+		if(colonne == 7 && l < 2) // Si H | 1, 2
 			throw new Exception("/!\\ Coordonnees non valide.");
 
-		if(colonne == 8 && ligne < 3) // Si I | 1, 2, 3
+		if(colonne == 8 && l < 3) // Si I | 1, 2, 3
 			throw new Exception("/!\\ Coordonnees non valide.");
 
-		if(colonne == 9 && ligne < 4) // Si J | 1, 2, 3, 4
+		if(colonne == 9 && l < 4) // Si J | 1, 2, 3, 4
 			throw new Exception("/!\\ Coordonnees non valide.");
 
-		if(colonne == 10 && (ligne < 6 || ligne == 10)) // Si K | 1, 2, 3, 4, 5, 6, 11
+		if(colonne == 10 && (l < 6 || l == 10)) // Si K | 1, 2, 3, 4, 5, 6, 11
 			throw new Exception("/!\\ Coordonnees non valide.");
-
-		if(_plateau[ligne][colonne] != color.EMPTY)
+		
+		if(couleur == color.BLACK_MARKER)
+			if(_plateau[l][colonne] == color.BLACK)
+				return true;
+		
+		if(couleur == color.WHITE_MARKER)
+			if(_plateau[l][colonne] == color.WHITE)
+				return true;
+		
+		if(_plateau[l][colonne] != color.EMPTY)
 			throw new Exception("/!\\ Case déjà occupée.");
-
+		
 		return true;
 	}
 
@@ -133,14 +143,26 @@ public class Yinsh {
 
 		int colonne = Character.getNumericValue(lettreColonne) - 10;
 		
-		if(verifierCoordonnees(colonne, ligne)) {
-			
-			_plateau[ligne - 1][colonne] = (couleur == color.BLACK) ? color.BLACK : color.WHITE;
+		if(verifierCoordonnees(colonne, ligne, (couleur == color.BLACK) ? color.BLACK_MARKER : color.WHITE_MARKER)) {
+			if(_plateau[ligne - 1][colonne] == couleur)
+				_plateau[ligne - 1][colonne] = (couleur == color.BLACK) ? color.BLACK_BOTH : color.WHITE_BOTH;
+		
+			else throw new Exception("/!\\ Couleur markeur incorrecte.");
 		}
 	}
 	
-	public void move_ring(char debutColonne, int debutLigne, char finColonne, int finLigne) {
+	public void move_ring(char lettreDebutColonne, int debutLigne, char lettreFinColonne, int finLigne) throws Exception {
 		
+		int debutColonne = Character.getNumericValue(lettreDebutColonne) - 10;
+		int finColonne = Character.getNumericValue(lettreFinColonne) - 10;
+		
+		/*if(verifierCoordonnees(debutColonne, debutLigne, _plateau[debutLigne - 1][debutColonne]) && verifierCoordonnees(finColonne, finLigne, _plateau[finLigne - 1][finColonne])) {
+			
+			if(_plateau[debutLigne - 1][debutColonne] == color.BLACK_BOTH || _plateau[debutLigne - 1][debutColonne] == color.WHITE_BOTH) {
 				
+				_plateau[finLigne - 1][finColonne] = (_plateau[debutLigne - 1][debutColonne] == color.BLACK_BOTH) ? color.BLACK : color.WHITE;
+				_plateau[debutLigne - 1][debutColonne] = (_plateau[debutLigne - 1][debutColonne] == color.BLACK_BOTH) ? color.BLACK_MARKER : color.WHITE_MARKER;
+			}
+		}*/
 	}
 }

@@ -7,8 +7,10 @@ public class TestUnitaire extends TestCase {
 	public static void testYinch() {
 
 		Yinsh _yinsh = new Yinsh();
+		Yinsh.color c = _yinsh.current_color();
 		
-		assertTrue(_yinsh.current_color() == Yinsh.color.BLACK || _yinsh.current_color() == Yinsh.color.WHITE);
+		assertTrue(c == Yinsh.color.BLACK || c == Yinsh.color.WHITE);
+		System.out.println("testYinch() : " + (c == Yinsh.color.BLACK || c == Yinsh.color.WHITE));
 	}
 
 	public static void testPut_Ring1() {
@@ -22,6 +24,7 @@ public class TestUnitaire extends TestCase {
 		catch(Exception e) {}
 
 		assertTrue(_yinsh.isAnneau('A', 3));
+		System.out.println("testPut_Ring1() : " + _yinsh.isAnneau('A', 3));
 	}
 
 	public static void testPut_Ring2() {
@@ -37,6 +40,7 @@ public class TestUnitaire extends TestCase {
 		catch(Exception e) {}
 
 		assertTrue(_yinsh.getNbAnneau() != 0);
+		System.out.println("testPut_Ring2() : " + (_yinsh.getNbAnneau() != 0));
 	}
 
 	public static void testPut_Ring3() {
@@ -58,11 +62,13 @@ public class TestUnitaire extends TestCase {
 		try {
 
 			_yinsh.put_ring('A', 1, Yinsh.color.WHITE);
+			
+			System.out.println("testPut_Ring3() : false");
 			assertTrue(false);
 		}
 		catch(Exception e) {
 
-			System.out.println(e.getMessage() + "\n");
+			System.out.println("testPut_Ring3() : true");
 			assertTrue(true);
 		}
 	}
@@ -76,11 +82,12 @@ public class TestUnitaire extends TestCase {
 			_yinsh.put_ring('A', 2, Yinsh.color.WHITE);
 			_yinsh.put_ring('A', 3, Yinsh.color.WHITE);
 
+			System.out.println("testPut_Ring4() : false");
 			assertTrue(false);
 		}
 		catch(Exception e) {
 
-			System.out.println(e.getMessage() + "\n");
+			System.out.println("testPut_Ring4() : true");
 			assertTrue(true);
 		}
 	}
@@ -94,11 +101,12 @@ public class TestUnitaire extends TestCase {
 			_yinsh.put_ring('A', 2, Yinsh.color.WHITE);
 			_yinsh.put_ring('A', 2, Yinsh.color.WHITE);
 
+			System.out.println("testIntersectionAnneau() : false");
 			assertTrue(false);
 		}
 		catch(Exception e) {
 
-			System.out.println(e.getMessage() + "\n");
+			System.out.println("testIntersectionAnneau() : true");
 			assertTrue(true);
 		}
 	}
@@ -114,8 +122,9 @@ public class TestUnitaire extends TestCase {
 			assertTrue(_yinsh.getNbAnneau() == 10);
 			assertTrue(_yinsh.getNbAnneauBlanc() == 5);
 			assertTrue(_yinsh.getNbAnneauNoir() == 5);
+			System.out.println("testIs_Initialized() : true");
 		}
-		catch(Exception e) { System.out.println(e.getMessage() + "\n"); }
+		catch(Exception e) { System.out.println("testIs_Initialized() : false"); }
 	}
 	
 	public static void testPut_Marker() {
@@ -129,15 +138,16 @@ public class TestUnitaire extends TestCase {
 			_yinsh.put_marker('D', 2, Yinsh.color.BLACK);
 			
 			assertTrue(true);
+			System.out.println("testPut_Marker() : true");
 		}
 		catch(Exception e) {
 			
-			System.out.println(e.getMessage() + "\n");
+			System.out.println("testPut_Marker() : false");
 			assertTrue(false);
 		}
 	}
 	
-	public static void testMove_Ring() {
+/*	public static void testMove_Ring() {
 		
 		Yinsh _yinsh = new Yinsh();
 		
@@ -155,7 +165,7 @@ public class TestUnitaire extends TestCase {
 			System.out.println(e.getMessage() + "\n");
 			assertTrue(false);
 		}
-	}
+	}*/
 	
 	public static Yinsh initYinsh(Yinsh y) throws Exception {
 		
