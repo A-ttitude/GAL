@@ -159,11 +159,9 @@ public class Yinsh {
 
 		int colonne = Character.getNumericValue(lettreColonne) - 10;
 		
-		color c = (couleur == color.BLACK) ? color.BLACK_MARKER : color.WHITE_MARKER;
-		
-		if(verifierCoordonnees(colonne, ligne, c))
+		if(verifierCoordonnees(colonne, ligne, (couleur == color.BLACK) ? color.BLACK_MARKER : color.WHITE_MARKER))
 			if(_plateau[ligne - 1][colonne] == couleur)
-				_plateau[ligne - 1][colonne] = c;
+				_plateau[ligne - 1][colonne] = (couleur == color.BLACK) ? color.BLACK_BOTH : color.WHITE_BOTH;
 	}
 	
 	public void move_ring(char lettreDebutColonne, int debutLigne, char lettreFinColonne, int finLigne) throws Exception {
