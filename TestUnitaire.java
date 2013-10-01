@@ -117,7 +117,7 @@ public class TestUnitaire extends TestCase {
 
 		try {
 			
-			initYinsh(_yinsh);
+			initPlateau(_yinsh);
 			
 			assertTrue(_yinsh.getNbAnneau() == 10);
 			assertTrue(_yinsh.getNbAnneauBlanc() == 5);
@@ -133,7 +133,7 @@ public class TestUnitaire extends TestCase {
 		
 		try {
 			
-			initYinsh(_yinsh);
+			initPlateau(_yinsh);
 			
 			_yinsh.put_marker('D', 2, Yinsh.color.BLACK);
 			
@@ -147,27 +147,28 @@ public class TestUnitaire extends TestCase {
 		}
 	}
 	
-/*	public static void testMove_Ring() {
+	public static void testMove_Ring() {
 		
 		Yinsh _yinsh = new Yinsh();
 		
 		try {
 			
-			initYinsh(_yinsh);
+			initPlateau(_yinsh);
 			
 			_yinsh.put_marker('D', 2, Yinsh.color.BLACK);
 			_yinsh.move_ring('D', 2, 'D', 5);
 			
 			assertTrue(true);
+			System.out.println("testMove_Ring() : true");
 		}
 		catch(Exception e) {
 			
-			System.out.println(e.getMessage() + "\n");
+			System.out.println("testMove_Ring() : false");
 			assertTrue(false);
 		}
-	}*/
+	}
 	
-	public static Yinsh initYinsh(Yinsh y) throws Exception {
+	public static Yinsh initPlateau(Yinsh y) throws Exception {
 		
 		y.put_ring('B', 1, Yinsh.color.BLACK);
 		y.put_ring('B', 2, Yinsh.color.WHITE);
