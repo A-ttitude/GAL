@@ -4,11 +4,11 @@ public class Yinsh {
 
 	public enum color {
 
-		BLACK, WHITE, RIEN
+		BLACK, BLACK_MARKER, BLACK_BOTH, WHITE, WHITE_MARKER, WHITE_BOTH, EMPTY
 	}
 
 	public color[][]	_plateau;
-	
+
 	public int			_nbAnneau;
 	public int			_nbAnneauBlanc;
 	public int			_nbAnneauNoir;
@@ -19,48 +19,19 @@ public class Yinsh {
 	public Yinsh() {
 
 		_plateau = new color[11][11];
+
+		for(int i = 0; i < 11; i++)
+			for(int j = 0; j < 11; j++)
+				_plateau[i][j] = color.EMPTY;
+
 		_nbAnneau = 0;
 		_nbAnneauBlanc = 0;
 		_nbAnneauNoir = 0;
-		
+
 		_derniereCouleur = 0;
 	}
 
-	// Méthodes
-
-	public color current_color() {
-
-		return Math.random() > 0.5 ? color.BLACK : color.WHITE;
-	}
-
-	public void put_ring(char lettreColonne, int ligne, Yinsh.color couleur) throws Exception {
-
-		int colonne = Character.getNumericValue(lettreColonne) - 10;
-		int indiceCouleur = (couleur == color.WHITE) ? 1 : 2;
-
-		if(verifierCoordonnees(colonne, ligne - 1)) {
-
-			if(_plateau[ligne - 1][colonne] == null) {
-				
-				if(indiceCouleur != _derniereCouleur) {
-
-					_plateau[ligne - 1][colonne] = couleur;
-					_derniereCouleur = indiceCouleur;
-					_nbAnneau++;
-					
-					if(indiceCouleur == 1)
-						_nbAnneauBlanc++;
-					
-					else if(indiceCouleur == 2)
-						_nbAnneauNoir++;
-				}
-				
-				else throw new Exception("/!\\ On ne peut pas placer deux anneaux de même couleur consécutivement.");
-			}
-			
-			else throw new Exception("/!\\ On ne peut pas placer deux anneaux sur la même intersection.");
-		}
-	}
+	// Accesseurs
 
 	public boolean isAnneau(char lettreColonne, int ligne) {
 
@@ -70,6 +41,48 @@ public class Yinsh {
 	public int getNbAnneau() {
 
 		return _nbAnneau;
+	}
+
+	public int getNbAnneauBlanc() {
+
+		return _nbAnneauBlanc;
+	}
+
+	public int getNbAnneauNoir() {
+
+		return _nbAnneauNoir;
+	}
+
+	// Méthodes
+
+	@SuppressWarnings("static-method")
+	public color current_color() {
+
+		return Math.random() > 0.5 ? color.BLACK : color.WHITE;
+	}
+
+	public void put_ring(char lettreColonne, int ligne, color couleur) throws Exception {
+
+		int colonne = Character.getNumericValue(lettreColonne) - 10;
+		int indiceCouleur = (couleur == color.WHITE) ? 1 : 2;
+
+		if(verifierCoordonnees(colonne, ligne - 1)) {
+
+			if(indiceCouleur != _derniereCouleur) {
+
+				_plateau[ligne - 1][colonne] = couleur;
+				_derniereCouleur = indiceCouleur;
+				_nbAnneau++;
+
+				if(indiceCouleur == 1)
+					_nbAnneauBlanc++;
+
+				else if(indiceCouleur == 2)
+					_nbAnneauNoir++;
+			}
+
+			else throw new Exception("/!\\ Deux fois la même couleur.");
+		}
 	}
 
 	private boolean verifierCoordonnees(int colonne, int ligne) throws Exception {
@@ -110,16 +123,24 @@ public class Yinsh {
 		if(colonne == 10 && (ligne < 6 || ligne == 10)) // Si K | 1, 2, 3, 4, 5, 6, 11
 			throw new Exception("/!\\ Coordonnees non valide.");
 
+		if(_plateau[ligne][colonne] != color.EMPTY)
+			throw new Exception("/!\\ Case déjà occupée.");
+
 		return true;
 	}
-	
-	public int getNbAnneauBlanc() {
+
+	public void put_marker(char lettreColonne, int ligne, color couleur) throws Exception {
+
+		int colonne = Character.getNumericValue(lettreColonne) - 10;
 		
-		return _nbAnneauBlanc;
+		if(verifierCoordonnees(colonne, ligne)) {
+			
+			_plateau[ligne - 1][colonne] = (couleur == color.BLACK) ? color.BLACK : color.WHITE;
+		}
 	}
 	
-	public int getNbAnneauNoir() {
+	public void move_ring(char debutColonne, int debutLigne, char finColonne, int finLigne) {
 		
-		return _nbAnneauNoir;
+				
 	}
 }
