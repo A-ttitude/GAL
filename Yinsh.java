@@ -133,13 +133,21 @@ public class Yinsh {
 			if(_plateau[l][colonne] == color.WHITE_BOTH)
 				return true;
 		
-		if(couleur == color.BLACK_MARKER)
+		if(couleur == color.BLACK_MARKER) {
+			
 			if(_plateau[l][colonne] == color.BLACK)
 				return true;
+			
+			throw new Exception("/!\\ Couleur markeur incorrecte.");
+		}
 		
-		if(couleur == color.WHITE_MARKER)
+		if(couleur == color.WHITE_MARKER) {
+			
 			if(_plateau[l][colonne] == color.WHITE)
 				return true;
+		
+			throw new Exception("/!\\ Couleur markeur incorrecte.");
+		}
 		
 		if(_plateau[l][colonne] != color.EMPTY)
 			throw new Exception("/!\\ Case déjà occupée.");
@@ -151,13 +159,11 @@ public class Yinsh {
 
 		int colonne = Character.getNumericValue(lettreColonne) - 10;
 		
-		if(verifierCoordonnees(colonne, ligne, (couleur == color.BLACK) ? color.BLACK_MARKER : color.WHITE_MARKER)) {
-			
-			if(_plateau[ligne - 1][colonne] == couleur)
-				_plateau[ligne - 1][colonne] = (couleur == color.BLACK) ? color.BLACK_BOTH : color.WHITE_BOTH;
+		color c = (couleur == color.BLACK) ? color.BLACK_MARKER : color.WHITE_MARKER;
 		
-			else throw new Exception("/!\\ Couleur markeur incorrecte.");
-		}
+		if(verifierCoordonnees(colonne, ligne, c))
+			if(_plateau[ligne - 1][colonne] == couleur)
+				_plateau[ligne - 1][colonne] = c;
 	}
 	
 	public void move_ring(char lettreDebutColonne, int debutLigne, char lettreFinColonne, int finLigne) throws Exception {

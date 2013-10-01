@@ -127,7 +127,7 @@ public class TestUnitaire extends TestCase {
 		catch(Exception e) { System.out.println("testIs_Initialized() : false"); }
 	}
 	
-	public static void testPut_Marker() {
+	public static void testPut_Marker1() {
 		
 		Yinsh _yinsh = new Yinsh();
 		
@@ -138,11 +138,11 @@ public class TestUnitaire extends TestCase {
 			_yinsh.put_marker('D', 2, Yinsh.color.BLACK);
 			
 			assertTrue(true);
-			System.out.println("testPut_Marker() : true");
+			System.out.println("testPut_Marker1() : true");
 		}
 		catch(Exception e) {
 			
-			System.out.println("testPut_Marker() : false");
+			System.out.println("testPut_Marker1() : false");
 			assertTrue(false);
 		}
 	}
@@ -165,6 +165,26 @@ public class TestUnitaire extends TestCase {
 			
 			System.out.println("testMove_Ring() : false");
 			assertTrue(false);
+		}
+	}
+	
+	public static void testPut_Marker2() {
+		
+		Yinsh _yinsh = new Yinsh();
+		
+		try {
+			
+			initPlateau(_yinsh);
+			
+			_yinsh.put_marker('D', 2, Yinsh.color.WHITE);
+			
+			assertTrue(false);
+			System.out.println("testPut_Marker2() : false");
+		}
+		catch(Exception e) {
+			
+			System.out.println("testPut_Marker2() : true");
+			assertTrue(true);
 		}
 	}
 	
