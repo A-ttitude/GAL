@@ -188,27 +188,48 @@ public class TestUnitaire extends TestCase {
 			assertTrue(true);
 		}
 	}
-	
-	public static void testMove_Ring2() {
-		
-		Yinsh _yinsh = new Yinsh();
-		
-		try {
-			
-			initPlateau(_yinsh);
-			
-			_yinsh.put_marker('D', 2, Yinsh.color.BLACK);
-			_yinsh.move_ring('D', 2, 'D', 6);
-			
-			assertTrue(false);
-			System.out.println("testMove_Ring2() : false");
-		}
-		catch(Exception e) {
-			
-			System.out.println("testMove_Ring2() : true");
-			assertTrue(true);
-		}
-	}
+
+    public static void testMove_Ring2() {
+
+        Yinsh _yinsh = new Yinsh();
+
+        try {
+
+            initPlateau(_yinsh);
+
+            _yinsh.put_marker('D', 2, Yinsh.color.BLACK);
+            _yinsh.move_ring('D', 2, 'D', 6);
+
+            assertTrue(false);
+            System.out.println("testMove_Ring2() : false");
+        }
+        catch(Exception e) {
+
+            System.out.println("testMove_Ring2() : true");
+            assertTrue(true);
+        }
+    }
+
+    public static void testMove_Ring3() {
+
+        Yinsh _yinsh = new Yinsh();
+
+        try {
+
+            initPlateau(_yinsh);
+
+            _yinsh.put_marker('D', 2, Yinsh.color.BLACK);
+            _yinsh.move_ring('D', 2, 'I', 7);
+
+            assertTrue(false);
+            System.out.println("testMove_Ring3() : false");
+        }
+        catch(Exception e) {
+
+            System.out.println("testMove_Ring3() : true");
+            assertTrue(true);
+        }
+    }
 	
 	public static Yinsh initPlateau(Yinsh y) throws Exception {
 		

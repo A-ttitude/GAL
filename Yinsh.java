@@ -86,7 +86,7 @@ public class Yinsh {
 	}
 
 	private boolean verifierCoordonnees(int colonne, int ligne, color couleur) throws Exception {
-		
+
 		int l = ligne - 1;
 
 		if(colonne < 0 || colonne > 11 || l < 0 || l > 11)
@@ -124,61 +124,96 @@ public class Yinsh {
 
 		if(colonne == 10 && (l < 6 || l == 10)) // Si K | 1, 2, 3, 4, 5, 6, 11
 			throw new Exception("/!\\ Coordonnees non valide.");
-		
+
 		if(couleur == color.BLACK_BOTH)
 			if(_plateau[l][colonne] == color.BLACK_BOTH)
 				return true;
-		
+
 		if(couleur == color.WHITE_BOTH)
 			if(_plateau[l][colonne] == color.WHITE_BOTH)
 				return true;
-		
+
 		if(couleur == color.BLACK_MARKER) {
-			
+
 			if(_plateau[l][colonne] == color.BLACK)
 				return true;
-			
+
 			throw new Exception("/!\\ Couleur markeur incorrecte.");
 		}
-		
+
 		if(couleur == color.WHITE_MARKER) {
-			
+
 			if(_plateau[l][colonne] == color.WHITE)
 				return true;
-		
+
 			throw new Exception("/!\\ Couleur markeur incorrecte.");
 		}
-		
+
 		if(_plateau[l][colonne] != color.EMPTY)
 			throw new Exception("/!\\ Case déjà occupée.");
-		
+
+		return true;
+	}
+
+	public boolean verifierDeplacement(int debutColonne, int debutLigne, int finColonne, int finLigne) {
+
+		if(debutColonne == finColonne && debutLigne == finLigne)
+			return false;
+
+		if(_plateau[finColonne][finLigne] != color.EMPTY)
+			return false;
+
+		int dC = debutColonne, fC = finColonne;
+		int dL = debutLigne, fL = finLigne;
+
+		if(dC > fC) {
+
+			dC = fC;
+			fC = debutColonne;
+		}
+
+		if(dL > fL) {
+
+			dL = fL;
+			fL = debutLigne;
+		}
+
+		for(int i = dC, j = dL; i < fC && j < fL; i++, j++)
+			if(_plateau[i][j] != color.EMPTY && _plateau[i][j] != color.BLACK_MARKER && _plateau[i][j] != color.WHITE_MARKER)
+				return false;
+
 		return true;
 	}
 
 	public void put_marker(char lettreColonne, int ligne, color couleur) throws Exception {
 
 		int colonne = Character.getNumericValue(lettreColonne) - 10;
-		
+
 		if(verifierCoordonnees(colonne, ligne, (couleur == color.BLACK) ? color.BLACK_MARKER : color.WHITE_MARKER))
 			if(_plateau[ligne - 1][colonne] == couleur)
 				_plateau[ligne - 1][colonne] = (couleur == color.BLACK) ? color.BLACK_BOTH : color.WHITE_BOTH;
 	}
-	
+
 	public void move_ring(char lettreDebutColonne, int debutLigne, char lettreFinColonne, int finLigne) throws Exception {
-		
+
 		int debutColonne = Character.getNumericValue(lettreDebutColonne) - 10;
 		int finColonne = Character.getNumericValue(lettreFinColonne) - 10;
-		
+
 		color c = _plateau[debutLigne - 1][debutColonne];
-		
+
 		if(verifierCoordonnees(debutColonne, debutLigne, c)) {
-			
+
 			if(verifierCoordonnees(finColonne, finLigne, color.EMPTY)) {
-				
+
 				if(_plateau[debutLigne - 1][debutColonne] == color.BLACK_BOTH || _plateau[debutLigne - 1][debutColonne] == color.WHITE_BOTH) {
-					
-					_plateau[finLigne - 1][finColonne] = (c == color.BLACK_BOTH) ? color.BLACK : color.WHITE;
-					_plateau[debutLigne - 1][debutColonne] = (c == color.BLACK_BOTH) ? color.BLACK_MARKER : color.WHITE_MARKER;
+
+					if(verifierDeplacement(debutColonne, debutLigne, finColonne, finLigne)) {
+
+						_plateau[finLigne - 1][finColonne] = (c == color.BLACK_BOTH) ? color.BLACK : color.WHITE;
+						_plateau[debutLigne - 1][debutColonne] = (c == color.BLACK_BOTH) ? color.BLACK_MARKER : color.WHITE_MARKER;
+					}
+
+					else throw new Exception("/!\\ Déplacement impossible.");
 				}
 			}
 		}
