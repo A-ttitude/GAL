@@ -87,6 +87,11 @@ public class Yinsh {
 		return color.EMPTY;
 	}
 
+	public int getEtat() {
+
+		return etatPartie;
+	}
+
 	/*
 	 * Méthodes
 	 */
@@ -299,6 +304,18 @@ public class Yinsh {
 		if(mode == Yinsh.BLITZ) {
 
 			System.out.println("Le joueur " + ((c == color.BLACK) ? "noir" : "blanc") + " a gagné !");
+			etatPartie = Yinsh.FINIE;
+		}
+
+		else if(nbAnneauNoir == 2) {
+
+			System.out.println("Le joueur noir a gagné !");
+			etatPartie = Yinsh.FINIE;
+		}
+
+		else if(nbAnneauBlanc == 2) {
+
+			System.out.println("Le joueur blanc a gagné !");
 			etatPartie = Yinsh.FINIE;
 		}
 	}

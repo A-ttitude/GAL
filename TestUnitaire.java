@@ -417,13 +417,45 @@ public class TestUnitaire extends TestCase {
 			y.remove_ring('H', 10);
 
 			assertTrue(y.getGagnant() == Yinsh.color.BLACK);
-			assertTrue(y.etatPartie == Yinsh.FINIE);
+			assertTrue(y.getEtat() == Yinsh.FINIE);
 
 			System.out.println("testModeBlitz(): true");
 		}
 		catch(Exception e) {
 
 			System.out.println("testModeBlitz() : false");
+			assertTrue(false);
+		}
+	}
+
+	public static void testAlignement1() {
+
+		// TODO Histoire 10
+	}
+
+	public static void testAlignement2() {
+
+		// TODO Histoire 11
+	}
+
+	public static void testFinPartie() {
+
+		Yinsh y = new Yinsh();
+
+		try {
+
+			initPlateau(y);
+			y.remove_ring('B', 2);
+			y.remove_ring('C', 2);
+			y.remove_ring('D', 6);
+
+			assertTrue(y.getEtat() == Yinsh.FINIE);
+
+			System.out.println("testFinPartie() : true");
+		}
+		catch(Exception e) {
+
+			System.out.println("testFinPartie() : false");
 			assertTrue(false);
 		}
 	}
