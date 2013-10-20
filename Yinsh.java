@@ -4,6 +4,12 @@ public class Yinsh {
 	protected final int changeMarker = 2;
 	protected final int removeRow = 3;
 
+	public final static int NORMAL = 1;
+	public final static int BLITZ = 2;
+
+	public final static int EN_COURS = 1;
+	public final static int FINIE = 2;
+
 	/*
 	 * Variables
 	 */
@@ -13,12 +19,14 @@ public class Yinsh {
 		BLACK, BLACK_MARKER, BLACK_BOTH, WHITE, WHITE_MARKER, WHITE_BOTH, EMPTY
 	}
 
-	public color[][] _plateau;
+	public color[][] plateau;
 
-	public int _nbAnneau;
-	public int _nbAnneauBlanc;
-	public int _nbAnneauNoir;
-	public int _derniereCouleur;
+	public int nbAnneau;
+	public int nbAnneauBlanc;
+	public int nbAnneauNoir;
+	public int derniereCouleur;
+	public int mode;
+	public int etatPartie;
 
 	/*
 	 * Constructeur
@@ -26,17 +34,12 @@ public class Yinsh {
 
 	public Yinsh() {
 
-		_plateau = new color[11][11];
+		init(Yinsh.NORMAL);
+	}
 
-		for(int colonne = 0; colonne < 11; colonne++)
-			for(int ligne = 0; ligne < 11; ligne++)
-				_plateau[colonne][ligne] = color.EMPTY;
+	public Yinsh(int mode) {
 
-		_nbAnneau = 0;
-		_nbAnneauBlanc = 0;
-		_nbAnneauNoir = 0;
-
-		_derniereCouleur = 0;
+		init(mode);
 	}
 
 	/*
@@ -45,37 +48,67 @@ public class Yinsh {
 
 	public boolean isAnneau(char lettreColonne, int ligne) {
 
-		return _plateau[Character.getNumericValue(lettreColonne) - 10][ligne - 1] != color.EMPTY;
+		return plateau[Character.getNumericValue(lettreColonne) - 10][ligne - 1] != color.EMPTY;
 	}
 
 	public int getNbAnneau() {
 
-		return _nbAnneau;
+		return nbAnneau;
 	}
 
 	public int getNbAnneauBlanc() {
 
-		return _nbAnneauBlanc;
+		return nbAnneauBlanc;
 	}
 
 	public int getNbAnneauNoir() {
 
-		return _nbAnneauNoir;
+		return nbAnneauNoir;
 	}
 
 	public color get(char lettreColonne, int ligne) {
 
-		return _plateau[Character.getNumericValue(lettreColonne) - 10][ligne - 1];
+		return plateau[Character.getNumericValue(lettreColonne) - 10][ligne - 1];
 	}
 
 	public int getScore(color c) {
 
-		return (c == color.BLACK) ? (5 - _nbAnneauNoir) : (5 - _nbAnneauBlanc);
+		return (c == color.BLACK) ? (5 - nbAnneauNoir) : (5 - nbAnneauBlanc);
+	}
+
+	public color getGagnant() {
+
+		if(nbAnneauNoir != 5)
+			return color.BLACK;
+
+		else if(nbAnneauBlanc != 5)
+			return color.WHITE;
+
+		return color.EMPTY;
 	}
 
 	/*
 	 * Méthodes
 	 */
+
+	protected void init(int mode) {
+
+		plateau = new color[11][11];
+
+		for(int colonne = 0; colonne < 11; colonne++)
+			for(int ligne = 0; ligne < 11; ligne++)
+				plateau[colonne][ligne] = color.EMPTY;
+
+		nbAnneau = 0;
+		nbAnneauBlanc = 0;
+		nbAnneauNoir = 0;
+
+		derniereCouleur = 0;
+
+		this.mode = mode;
+
+		etatPartie = Yinsh.EN_COURS;
+	}
 
 	@SuppressWarnings("static-method")
 	public color current_color() {
@@ -90,15 +123,16 @@ public class Yinsh {
 
 		if(verifierCoordonnees(colonne, ligne, couleur)) {
 
-			if(indiceCouleur != _derniereCouleur) {
+			if(indiceCouleur != derniereCouleur) {
 
-				_plateau[colonne][ligne - 1] = couleur;
-				_derniereCouleur = indiceCouleur;
-				_nbAnneau++;
+				plateau[colonne][ligne - 1] = couleur;
+				derniereCouleur = indiceCouleur;
+				nbAnneau++;
 
-				if(indiceCouleur == 1) _nbAnneauBlanc++;
+				if(indiceCouleur == 1)
+					nbAnneauBlanc++;
 
-				else _nbAnneauNoir++;
+				else nbAnneauNoir++;
 			}
 
 			else throw new Exception("/!\\ Deux fois la même couleur.");
@@ -146,16 +180,16 @@ public class Yinsh {
 			throw new Exception("/!\\ Coordonnees non valide.");
 
 		if(couleur == color.BLACK_BOTH)
-			if(_plateau[colonne][l] == color.BLACK_BOTH)
+			if(plateau[colonne][l] == color.BLACK_BOTH)
 				return true;
 
 		if(couleur == color.WHITE_BOTH)
-			if(_plateau[colonne][l] == color.WHITE_BOTH)
+			if(plateau[colonne][l] == color.WHITE_BOTH)
 				return true;
 
 		if(couleur == color.BLACK_MARKER) {
 
-			if(_plateau[colonne][l] == color.BLACK)
+			if(plateau[colonne][l] == color.BLACK)
 				return true;
 
 			throw new Exception("/!\\ Couleur markeur incorrecte.");
@@ -163,13 +197,13 @@ public class Yinsh {
 
 		if(couleur == color.WHITE_MARKER) {
 
-			if(_plateau[colonne][l] == color.WHITE)
+			if(plateau[colonne][l] == color.WHITE)
 				return true;
 
 			throw new Exception("/!\\ Couleur markeur incorrecte.");
 		}
 
-		if(_plateau[colonne][l] != color.EMPTY)
+		if(plateau[colonne][l] != color.EMPTY)
 			throw new Exception("/!\\ Case déjà occupée.");
 
 		return true;
@@ -180,15 +214,15 @@ public class Yinsh {
 		if(debutColonne == finColonne && debutLigne == finLigne)
 			return false;
 
-		if(_plateau[finColonne][finLigne - 1] != color.EMPTY)
+		if(plateau[finColonne][finLigne - 1] != color.EMPTY)
 			return false;
 
-		return function(debutColonne, debutLigne, finColonne, finLigne, verifierDeplacement); // verifierDeplacement
+		return function(debutColonne, debutLigne, finColonne, finLigne, verifierDeplacement);
 	}
 
 	protected boolean verifierDeplacement(int i, int j) {
 
-		if(_plateau[i][j] == color.BLACK || _plateau[i][j] == color.WHITE)
+		if(plateau[i][j] == color.BLACK || plateau[i][j] == color.WHITE)
 			return false;
 
 		return true;
@@ -199,8 +233,8 @@ public class Yinsh {
 		int colonne = Character.getNumericValue(lettreColonne) - 10;
 
 		if(verifierCoordonnees(colonne, ligne, (couleur == color.BLACK) ? color.BLACK_MARKER : color.WHITE_MARKER))
-			if(_plateau[colonne][ligne - 1] == couleur)
-				_plateau[colonne][ligne - 1] = (couleur == color.BLACK) ? color.BLACK_BOTH : color.WHITE_BOTH;
+			if(plateau[colonne][ligne - 1] == couleur)
+				plateau[colonne][ligne - 1] = (couleur == color.BLACK) ? color.BLACK_BOTH : color.WHITE_BOTH;
 	}
 
 	public void move_ring(char lettreDebutColonne, int debutLigne, char lettreFinColonne, int finLigne) throws Exception {
@@ -208,18 +242,18 @@ public class Yinsh {
 		int debutColonne = Character.getNumericValue(lettreDebutColonne) - 10;
 		int finColonne = Character.getNumericValue(lettreFinColonne) - 10;
 
-		color c = _plateau[debutColonne][debutLigne - 1];
+		color c = plateau[debutColonne][debutLigne - 1];
 
 		if(verifierCoordonnees(debutColonne, debutLigne, c)) {
 
 			if(verifierCoordonnees(finColonne, finLigne, color.EMPTY)) {
 
-				if(_plateau[debutColonne][debutLigne - 1] == color.BLACK_BOTH || _plateau[debutColonne][debutLigne - 1] == color.WHITE_BOTH) {
+				if(plateau[debutColonne][debutLigne - 1] == color.BLACK_BOTH || plateau[debutColonne][debutLigne - 1] == color.WHITE_BOTH) {
 
 					if(verifierDeplacement(debutColonne, debutLigne, finColonne, finLigne)) {
 
-						_plateau[finColonne][finLigne - 1] = (c == color.BLACK_BOTH) ? color.BLACK : color.WHITE;
-						_plateau[debutColonne][debutLigne - 1] = (c == color.BLACK_BOTH) ? color.BLACK_MARKER : color.WHITE_MARKER;
+						plateau[finColonne][finLigne - 1] = (c == color.BLACK_BOTH) ? color.BLACK : color.WHITE;
+						plateau[debutColonne][debutLigne - 1] = (c == color.BLACK_BOTH) ? color.BLACK_MARKER : color.WHITE_MARKER;
 
 						function(debutColonne, debutLigne, finColonne, finLigne, changeMarker);
 					}
@@ -232,7 +266,7 @@ public class Yinsh {
 
 	protected void changeMarker(int i, int j) {
 
-		_plateau[i][j] = (_plateau[i][j] == color.BLACK_MARKER) ? color.WHITE_MARKER : color.BLACK_MARKER;
+		plateau[i][j] = (plateau[i][j] == color.BLACK_MARKER) ? color.WHITE_MARKER : color.BLACK_MARKER;
 	}
 
 	public void remove_row(char lettreDebutColonne, int debutLigne, char lettreFinColonne, int finLigne) {
@@ -245,20 +279,28 @@ public class Yinsh {
 
 	protected void remove(int i, int j) {
 
-		_plateau[i][j] = color.EMPTY;
+		plateau[i][j] = color.EMPTY;
 	}
 
 	public void remove_ring(char lettreColonne, int ligne) {
 
 		int colonne = Character.getNumericValue(lettreColonne) - 10;
-		color c = _plateau[colonne][ligne - 1];
+		color c = plateau[colonne][ligne - 1];
 
 		remove(colonne, ligne - 1);
 
 		if(c == color.BLACK)
-			_nbAnneauNoir--;
+			nbAnneauNoir--;
 
-		else _nbAnneauBlanc--;
+		else nbAnneauBlanc--;
+
+		nbAnneau--;
+
+		if(mode == Yinsh.BLITZ) {
+
+			System.out.println("Le joueur " + ((c == color.BLACK) ? "noir" : "blanc") + " a gagné !");
+			etatPartie = Yinsh.FINIE;
+		}
 	}
 
 	protected boolean function(int debutColonne, int debutLigne, int finColonne, int finLigne, int f) {
