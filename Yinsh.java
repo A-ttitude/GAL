@@ -1,6 +1,8 @@
 public class Yinsh {
 
-	// Variables //
+	/*
+	 * Variables
+	 */
 
 	public enum color {
 
@@ -14,15 +16,17 @@ public class Yinsh {
 	public int			_nbAnneauNoir;
 	public int			_derniereCouleur;
 
-	// Constructeur
+	/*
+	 * Constructeur
+	 */
 
 	public Yinsh() {
 
 		_plateau = new color[11][11];
 
-		for(int i = 0; i < 11; i++)
-			for(int j = 0; j < 11; j++)
-				_plateau[i][j] = color.EMPTY;
+		for(int colonne = 0; colonne < 11; colonne++)
+			for(int ligne = 0; ligne < 11; ligne++)
+				_plateau[colonne][ligne] = color.EMPTY;
 
 		_nbAnneau = 0;
 		_nbAnneauBlanc = 0;
@@ -31,11 +35,13 @@ public class Yinsh {
 		_derniereCouleur = 0;
 	}
 
-	// Accesseurs
+	/*
+	 * Accesseurs
+	 */
 
 	public boolean isAnneau(char lettreColonne, int ligne) {
 
-		return _plateau[ligne - 1][Character.getNumericValue(lettreColonne) - 10] != null;
+		return _plateau[Character.getNumericValue(lettreColonne) - 10][ligne - 1] != color.EMPTY;
 	}
 
 	public int getNbAnneau() {
@@ -51,6 +57,11 @@ public class Yinsh {
 	public int getNbAnneauNoir() {
 
 		return _nbAnneauNoir;
+	}
+
+	public color get(char lettreColonne, int ligne) {
+
+		return _plateau[Character.getNumericValue(lettreColonne) - 10][ligne - 1];
 	}
 
 	// Méthodes
@@ -70,7 +81,7 @@ public class Yinsh {
 
 			if(indiceCouleur != _derniereCouleur) {
 
-				_plateau[ligne - 1][colonne] = couleur;
+				_plateau[colonne][ligne - 1] = couleur;
 				_derniereCouleur = indiceCouleur;
 				_nbAnneau++;
 
@@ -126,16 +137,16 @@ public class Yinsh {
 			throw new Exception("/!\\ Coordonnees non valide.");
 
 		if(couleur == color.BLACK_BOTH)
-			if(_plateau[l][colonne] == color.BLACK_BOTH)
+			if(_plateau[colonne][l] == color.BLACK_BOTH)
 				return true;
 
 		if(couleur == color.WHITE_BOTH)
-			if(_plateau[l][colonne] == color.WHITE_BOTH)
+			if(_plateau[colonne][l] == color.WHITE_BOTH)
 				return true;
 
 		if(couleur == color.BLACK_MARKER) {
 
-			if(_plateau[l][colonne] == color.BLACK)
+			if(_plateau[colonne][l] == color.BLACK)
 				return true;
 
 			throw new Exception("/!\\ Couleur markeur incorrecte.");
@@ -143,13 +154,13 @@ public class Yinsh {
 
 		if(couleur == color.WHITE_MARKER) {
 
-			if(_plateau[l][colonne] == color.WHITE)
+			if(_plateau[colonne][l] == color.WHITE)
 				return true;
 
 			throw new Exception("/!\\ Couleur markeur incorrecte.");
 		}
 
-		if(_plateau[l][colonne] != color.EMPTY)
+		if(_plateau[colonne][l] != color.EMPTY)
 			throw new Exception("/!\\ Case déjà occupée.");
 
 		return true;
@@ -160,7 +171,7 @@ public class Yinsh {
 		if(debutColonne == finColonne && debutLigne == finLigne)
 			return false;
 
-		if(_plateau[finColonne][finLigne] != color.EMPTY)
+		if(_plateau[finColonne][finLigne - 1] != color.EMPTY)
 			return false;
 
 		int dC = debutColonne, fC = finColonne;
@@ -168,19 +179,32 @@ public class Yinsh {
 
 		if(dC > fC) {
 
-			dC = fC;
+			dC = finColonne;
 			fC = debutColonne;
 		}
 
 		if(dL > fL) {
 
-			dL = fL;
+			dL = finLigne;
 			fL = debutLigne;
 		}
 
-		for(int i = dC, j = dL; i < fC && j < fL; i++, j++)
-			if(_plateau[i][j] != color.EMPTY && _plateau[i][j] != color.BLACK_MARKER && _plateau[i][j] != color.WHITE_MARKER)
+		int i = dC;
+		int j = dL;
+
+		if(dC != fC)
+			i++;
+
+		while(i < fC || j < fL) {
+
+			if(_plateau[i][j] == color.BLACK || _plateau[i][j] == color.WHITE)
 				return false;
+
+			if(dC != fC)
+				i++;
+
+			j++;
+		}
 
 		return true;
 	}
@@ -190,8 +214,8 @@ public class Yinsh {
 		int colonne = Character.getNumericValue(lettreColonne) - 10;
 
 		if(verifierCoordonnees(colonne, ligne, (couleur == color.BLACK) ? color.BLACK_MARKER : color.WHITE_MARKER))
-			if(_plateau[ligne - 1][colonne] == couleur)
-				_plateau[ligne - 1][colonne] = (couleur == color.BLACK) ? color.BLACK_BOTH : color.WHITE_BOTH;
+			if(_plateau[colonne][ligne - 1] == couleur)
+				_plateau[colonne][ligne - 1] = (couleur == color.BLACK) ? color.BLACK_BOTH : color.WHITE_BOTH;
 	}
 
 	public void move_ring(char lettreDebutColonne, int debutLigne, char lettreFinColonne, int finLigne) throws Exception {
@@ -199,23 +223,59 @@ public class Yinsh {
 		int debutColonne = Character.getNumericValue(lettreDebutColonne) - 10;
 		int finColonne = Character.getNumericValue(lettreFinColonne) - 10;
 
-		color c = _plateau[debutLigne - 1][debutColonne];
+		color c = _plateau[debutColonne][debutLigne - 1];
 
 		if(verifierCoordonnees(debutColonne, debutLigne, c)) {
 
 			if(verifierCoordonnees(finColonne, finLigne, color.EMPTY)) {
 
-				if(_plateau[debutLigne - 1][debutColonne] == color.BLACK_BOTH || _plateau[debutLigne - 1][debutColonne] == color.WHITE_BOTH) {
+				if(_plateau[debutColonne][debutLigne - 1] == color.BLACK_BOTH || _plateau[debutColonne][debutLigne - 1] == color.WHITE_BOTH) {
 
 					if(verifierDeplacement(debutColonne, debutLigne, finColonne, finLigne)) {
 
-						_plateau[finLigne - 1][finColonne] = (c == color.BLACK_BOTH) ? color.BLACK : color.WHITE;
-						_plateau[debutLigne - 1][debutColonne] = (c == color.BLACK_BOTH) ? color.BLACK_MARKER : color.WHITE_MARKER;
+						_plateau[finColonne][finLigne - 1] = (c == color.BLACK_BOTH) ? color.BLACK : color.WHITE;
+						_plateau[debutColonne][debutLigne - 1] = (c == color.BLACK_BOTH) ? color.BLACK_MARKER : color.WHITE_MARKER;
+
+						changeMarker(debutColonne, debutLigne, finColonne, finLigne);
 					}
 
 					else throw new Exception("/!\\ Déplacement impossible.");
 				}
 			}
+		}
+	}
+
+	public void changeMarker(int debutColonne, int debutLigne, int finColonne, int finLigne) {
+
+		int dC = debutColonne, fC = finColonne;
+		int dL = debutLigne, fL = finLigne;
+
+		if(dC > fC) {
+
+			dC = finColonne;
+			fC = debutColonne;
+		}
+
+		if(dL > fL) {
+
+			dL = finLigne;
+			fL = debutLigne;
+		}
+
+		int i = dC;
+		int j = dL;
+
+		if(dC != fC)
+			i++;
+
+		while(i < fC || j < fL) {
+
+			_plateau[i][j] = (_plateau[i][j] == color.BLACK_MARKER) ? color.WHITE_MARKER : color.BLACK_MARKER;
+
+			if(dC != fC)
+				i++;
+
+			j++;
 		}
 	}
 }

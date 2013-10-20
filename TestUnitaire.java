@@ -146,7 +146,7 @@ public class TestUnitaire extends TestCase {
 			assertTrue(false);
 		}
 	}
-	
+
 	public static void testMove_Ring1() {
 		
 		Yinsh _yinsh = new Yinsh();
@@ -157,18 +157,17 @@ public class TestUnitaire extends TestCase {
 			
 			_yinsh.put_marker('D', 2, Yinsh.color.BLACK);
 			_yinsh.move_ring('D', 2, 'D', 5);
-			
+
 			assertTrue(true);
 			System.out.println("testMove_Ring1() : true");
 		}
 		catch(Exception e) {
-			
-			System.out.println(e.getMessage());
+
 			System.out.println("testMove_Ring1() : false");
 			assertTrue(false);
 		}
 	}
-	
+
 	public static void testPut_Marker2() {
 		
 		Yinsh _yinsh = new Yinsh();
@@ -183,7 +182,7 @@ public class TestUnitaire extends TestCase {
 			System.out.println("testPut_Marker2() : false");
 		}
 		catch(Exception e) {
-			
+
 			System.out.println("testPut_Marker2() : true");
 			assertTrue(true);
 		}
@@ -230,7 +229,74 @@ public class TestUnitaire extends TestCase {
             assertTrue(true);
         }
     }
-	
+
+	public static void testMove_Ring4() {
+
+		Yinsh _yinsh = new Yinsh();
+
+		try {
+
+			// Placement des anneaux
+
+			_yinsh.put_ring('A', 5, Yinsh.color.BLACK);
+			_yinsh.put_ring('B', 4, Yinsh.color.WHITE);
+
+			_yinsh.put_ring('D', 3, Yinsh.color.BLACK);
+			_yinsh.put_ring('B', 6, Yinsh.color.WHITE);
+
+			_yinsh.put_ring('E', 4, Yinsh.color.BLACK);
+			_yinsh.put_ring('D', 2, Yinsh.color.WHITE);
+
+			_yinsh.put_ring('G', 8, Yinsh.color.BLACK);
+			_yinsh.put_ring('F', 8, Yinsh.color.WHITE);
+
+			_yinsh.put_ring('H', 8, Yinsh.color.BLACK);
+			_yinsh.put_ring('G', 7, Yinsh.color.WHITE);
+
+			// Placement des marqueurs noirs
+
+			_yinsh._plateau[1][4] = Yinsh.color.BLACK_MARKER;
+			_yinsh._plateau[2][3] = Yinsh.color.BLACK_MARKER;
+			_yinsh._plateau[3][6] = Yinsh.color.BLACK_MARKER;
+			_yinsh._plateau[4][4] = Yinsh.color.BLACK_MARKER;
+			_yinsh._plateau[4][7] = Yinsh.color.BLACK_MARKER;
+			_yinsh._plateau[8][7] = Yinsh.color.BLACK_MARKER;
+
+			// Placement des marqueurs blancs
+
+			_yinsh._plateau[2][4] = Yinsh.color.WHITE_MARKER;
+			_yinsh._plateau[2][5] = Yinsh.color.WHITE_MARKER;
+			_yinsh._plateau[3][5] = Yinsh.color.WHITE_MARKER;
+			_yinsh._plateau[4][2] = Yinsh.color.WHITE_MARKER;
+			_yinsh._plateau[4][5] = Yinsh.color.WHITE_MARKER;
+			_yinsh._plateau[4][6] = Yinsh.color.WHITE_MARKER;
+			_yinsh._plateau[4][8] = Yinsh.color.WHITE_MARKER;
+			_yinsh._plateau[6][8] = Yinsh.color.WHITE_MARKER;
+			_yinsh._plateau[7][6] = Yinsh.color.WHITE_MARKER;
+
+			// Déplacements anneaux (E, 4) en (E, 10)
+
+			_yinsh.put_marker('E', 4, Yinsh.color.BLACK);
+			_yinsh.move_ring('E', 4, 'E', 10);
+
+			assertTrue(_yinsh.get('E', 4) == Yinsh.color.BLACK_MARKER);
+			assertTrue(_yinsh.get('E', 6) == Yinsh.color.BLACK_MARKER);
+			assertTrue(_yinsh.get('E', 7) == Yinsh.color.BLACK_MARKER);
+			assertTrue(_yinsh.get('E', 9) == Yinsh.color.BLACK_MARKER);
+
+			assertTrue(_yinsh.get('E', 5) == Yinsh.color.WHITE_MARKER);
+			assertTrue(_yinsh.get('E', 8) == Yinsh.color.WHITE_MARKER);
+
+			System.out.println("testMove_Ring4() : true");
+		}
+		catch(Exception e) {
+
+			e.printStackTrace();
+			System.out.println("testMove_Ring4() : false");
+			assertTrue(false);
+		}
+	}
+
 	public static Yinsh initPlateau(Yinsh y) throws Exception {
 		
 		y.put_ring('B', 1, Yinsh.color.BLACK);
