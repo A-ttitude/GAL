@@ -291,8 +291,74 @@ public class TestUnitaire extends TestCase {
 		}
 		catch(Exception e) {
 
-			e.printStackTrace();
 			System.out.println("testMove_Ring4() : false");
+			assertTrue(false);
+		}
+	}
+
+	public static void testRemove_Row() {
+
+		Yinsh _yinsh = new Yinsh();
+
+		try {
+
+			// Placement des anneaux
+
+			_yinsh.put_ring('D', 6, Yinsh.color.BLACK);
+			_yinsh.put_ring('C', 4, Yinsh.color.WHITE);
+
+			_yinsh.put_ring('E', 3, Yinsh.color.BLACK);
+			_yinsh.put_ring('D', 4, Yinsh.color.WHITE);
+
+			_yinsh.put_ring('E', 4, Yinsh.color.BLACK);
+			_yinsh.put_ring('F', 3, Yinsh.color.WHITE);
+
+			_yinsh.put_ring('G', 6, Yinsh.color.BLACK);
+			_yinsh.put_ring('F', 6, Yinsh.color.WHITE);
+
+			_yinsh.put_ring('H', 10, Yinsh.color.BLACK);
+			_yinsh.put_ring('I', 8, Yinsh.color.WHITE);
+
+			// Placement des marqueurs noirs
+
+			_yinsh._plateau[3][1] = Yinsh.color.BLACK_MARKER;
+			_yinsh._plateau[4][5] = Yinsh.color.BLACK_MARKER;
+			_yinsh._plateau[5][3] = Yinsh.color.BLACK_MARKER;
+			_yinsh._plateau[5][6] = Yinsh.color.BLACK_MARKER;
+			_yinsh._plateau[6][7] = Yinsh.color.BLACK_MARKER;
+			_yinsh._plateau[7][7] = Yinsh.color.BLACK_MARKER;
+			_yinsh._plateau[7][8] = Yinsh.color.BLACK_MARKER;
+			_yinsh._plateau[8][9] = Yinsh.color.BLACK_MARKER;
+
+			// Placement des marqueurs blancs
+
+			_yinsh._plateau[3][4] = Yinsh.color.WHITE_MARKER;
+			_yinsh._plateau[4][4] = Yinsh.color.WHITE_MARKER;
+			_yinsh._plateau[4][6] = Yinsh.color.WHITE_MARKER;
+			_yinsh._plateau[4][7] = Yinsh.color.WHITE_MARKER;
+			_yinsh._plateau[6][3] = Yinsh.color.WHITE_MARKER;
+			_yinsh._plateau[6][6] = Yinsh.color.WHITE_MARKER;
+
+			// Le joueur "noir" retire les marqueurs de l'alignement
+
+			_yinsh.remove_row('E', 6, 'I', 10);
+			assertTrue(_yinsh.get('E', 6) == Yinsh.color.EMPTY);
+			assertTrue(!_yinsh.isAnneau('F', 7));
+			assertTrue(!_yinsh.isAnneau('G', 8));
+			assertTrue(!_yinsh.isAnneau('H', 9));
+			assertTrue(!_yinsh.isAnneau('I', 10));
+
+			_yinsh.remove_ring('H', 10);
+			assertTrue(!_yinsh.isAnneau('H', 10));
+
+			int score = _yinsh.getScore(Yinsh.color.BLACK);
+			assertTrue(score == 1);
+
+			System.out.println("testRemove_Row() : true");
+		}
+		catch(Exception e) {
+
+			System.out.println("testRemove_Row() : false");
 			assertTrue(false);
 		}
 	}
