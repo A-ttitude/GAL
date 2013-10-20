@@ -19,8 +19,6 @@ public class Yinsh {
 	public int _nbAnneauBlanc;
 	public int _nbAnneauNoir;
 	public int _derniereCouleur;
-	public int _scoreNoir;
-	public int _scoreBlanc;
 
 	/*
 	 * Constructeur
@@ -39,9 +37,6 @@ public class Yinsh {
 		_nbAnneauNoir = 0;
 
 		_derniereCouleur = 0;
-
-		_scoreNoir = 0;
-		_scoreBlanc = 0;
 	}
 
 	/*
@@ -75,7 +70,7 @@ public class Yinsh {
 
 	public int getScore(color c) {
 
-		return (c == color.BLACK) ? _scoreNoir : _scoreBlanc;
+		return (c == color.BLACK) ? (5 - _nbAnneauNoir) : (5 - _nbAnneauBlanc);
 	}
 
 	/*
@@ -261,9 +256,9 @@ public class Yinsh {
 		remove(colonne, ligne - 1);
 
 		if(c == color.BLACK)
-			_scoreNoir++;
+			_nbAnneauNoir--;
 
-		else _scoreBlanc++;
+		else _nbAnneauBlanc--;
 	}
 
 	protected boolean function(int debutColonne, int debutLigne, int finColonne, int finLigne, int f) {
