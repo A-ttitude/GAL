@@ -7,7 +7,7 @@ public class AllTests {
 
 		TestSuite _suite = new TestSuite("Tests Unitaires");
 		_suite.addTest(new TestSuite(TestUnitaire.class));
-		
+
 		return _suite;
 	}
 
