@@ -117,37 +117,17 @@ public class Yinsh {
 
 		if(colonne < 0 || colonne > 11 || l < 0 || l > 11) throw new Exception("/!\\ Coordonnees non valide.");
 
-		if(colonne == 0 && (l == 0 || l >= 5)) // Si A | 1, 6, 7, 8, 9, 10, 11
-			throw new Exception("/!\\ Coordonnees non valide.");
-
-		if(colonne == 1 && l >= 7) // Si B | 8, 9, 10, 11
-			throw new Exception("/!\\ Coordonnees non valide.");
-
-		if(colonne == 2 && l >= 8) // Si C | 9, 10, 11
-			throw new Exception("/!\\ Coordonnees non valide.");
-
-		if(colonne == 3 && l >= 9) // Si D | 10, 11
-			throw new Exception("/!\\ Coordonnees non valide.");
-
-		if(colonne == 4 && l == 10) // Si E | 10
-			throw new Exception("/!\\ Coordonnees non valide.");
-
-		if(colonne == 5 && (l == 0 || l == 10)) // Si F | 10
-			throw new Exception("/!\\ Coordonnees non valide.");
-
-		if(colonne == 6 && l == 0) // Si G | 1
-			throw new Exception("/!\\ Coordonnees non valide.");
-
-		if(colonne == 7 && l < 2) // Si H | 1, 2
-			throw new Exception("/!\\ Coordonnees non valide.");
-
-		if(colonne == 8 && l < 3) // Si I | 1, 2, 3
-			throw new Exception("/!\\ Coordonnees non valide.");
-
-		if(colonne == 9 && l < 4) // Si J | 1, 2, 3, 4
-			throw new Exception("/!\\ Coordonnees non valide.");
-
-		if(colonne == 10 && (l < 6 || l == 10)) // Si K | 1, 2, 3, 4, 5, 6, 11
+		if((colonne == 0 && (l == 0 || l >= 5)) || // Si A | 1, 6, 7, 8, 9, 10, 11
+		   (colonne == 1 && l >= 7) || // Si B | 8, 9, 10, 11
+		   (colonne == 2 && l >= 8) || // Si C | 9, 10, 11
+		   (colonne == 3 && l >= 9) || // Si D | 10, 11
+		   (colonne == 4 && l == 10) || // Si E | 10
+		   (colonne == 5 && (l == 0 || l == 10)) || // Si F | 10
+		   (colonne == 6 && l == 0) || // Si G | 1
+		   (colonne == 7 && l < 2) || // Si H | 1, 2
+		   (colonne == 8 && l < 3) ||// Si I | 1, 2, 3
+		   (colonne == 9 && l < 4) || // Si J | 1, 2, 3, 4
+		   (colonne == 10 && (l < 6 || l == 10))) // Si K | 1, 2, 3, 4, 5, 6, 11
 			throw new Exception("/!\\ Coordonnees non valide.");
 
 		if((c == color.BLACK_BOTH && plateau[colonne][l] == color.BLACK_BOTH) || (c == color.WHITE_BOTH && plateau[colonne][l] == color.WHITE_BOTH))
